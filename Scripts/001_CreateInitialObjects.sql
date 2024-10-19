@@ -16,18 +16,18 @@ GO
 
 -- Create tables
 CREATE TABLE admin.Rol (
-	RolId INT PRIMARY KEY,
-	descripcion CHAR(13) NOT NULL
+	id_rol INT PRIMARY KEY,
+	descripcion VARCHAR(13) NOT NULL
 );
 
 CREATE TABLE admin.Usuario (
-	id_usuario CHAR(100) PRIMARY KEY,
-	email CHAR(50) NOT NULL,
-	contraseña CHAR(150) NOT NULL,
-	nombre CHAR(50) NOT NULL,
-	apellido CHAR(50) NOT NULL,
-	RolId INT NOT NULL,
-	FOREIGN KEY (RolId) REFERENCES admin.ROL(RolId),
+	id_usuario VARCHAR(100) PRIMARY KEY,
+	email VARCHAR(50) NOT NULL,
+	contraseña VARCHAR(150) NOT NULL,
+	nombre VARCHAR(50) NOT NULL,
+	apellido VARCHAR(50) NOT NULL,
+	id_rol INT NOT NULL,
+	FOREIGN KEY (id_rol) REFERENCES admin.ROL(id_rol),
 
 	NormalizedUserName char(100),
 	AccessFailedCount int,
@@ -45,47 +45,47 @@ CREATE TABLE admin.Usuario (
 
 CREATE TABLE admin.Medico (
 	matricula INT PRIMARY KEY,
-	id_usuario CHAR(100) NOT NULL,
+	id_usuario VARCHAR(100) NOT NULL,
 	FOREIGN KEY (id_usuario) REFERENCES admin.Usuario(id_usuario),
 );
 
 CREATE TABLE admin.Farmaceutico (
 	matricula INT PRIMARY KEY,
-	id_usuario CHAR(100) NOT NULL,
+	id_usuario VARCHAR(100) NOT NULL,
 	FOREIGN KEY (id_usuario) REFERENCES admin.Usuario(id_usuario),
 );
 
 CREATE TABLE admin.Medicamento (
 	id_medicamento INT IDENTITY(1,1) PRIMARY KEY,
-	nombre_comercial CHAR(50),
-	presentacion CHAR(50),
+	nombre_comercial VARCHAR(50),
+	presentacion VARCHAR(50),
 	concentracion INT,
-	descripcion CHAR(50)
+	descripcion VARCHAR(50)
 );
 
 CREATE TABLE admin.ObraSocial (
-	id_obra_social INT IDENTITY(1,1) PRIMARY KEY,
-	nombre CHAR(50),
-	plan_social CHAR(50)
+	id_obra_social INT PRIMARY KEY,
+	nombre VARCHAR(50),
+	plan_social VARCHAR(50)
 );
 
 CREATE TABLE admin.Paciente (
 	dni INT PRIMARY KEY,
-	nombre CHAR(50),
-	apellido CHAR(50),
+	nombre VARCHAR(50),
+	apellido VARCHAR(50),
 	fecha_nacimiento DATETIME,
 	id_obra_social INT,
-	nacionalidad CHAR(15),
+	nacionalidad VARCHAR(15),
 	sexo CHAR(1) CHECK (sexo = 'M' OR sexo = 'F'),
-	celular CHAR(10),
-	telefono_fijo CHAR(8),
+	celular VARCHAR(10),
+	telefono_fijo VARCHAR(8),
 	FOREIGN KEY (id_obra_social) REFERENCES admin.ObraSocial(id_obra_social),
-	numero_afiliado CHAR(50)
+	numero_afiliado VARCHAR(50)
 );
 
 CREATE TABLE admin.Estado (
 	id_estado INT IDENTITY(1,1) PRIMARY KEY,
-	descripcion CHAR(50)
+	descripcion VARCHAR(50)
 );
 
 CREATE TABLE admin.Receta (
@@ -98,8 +98,8 @@ CREATE TABLE admin.Receta (
 	FOREIGN KEY (dni_paciente) REFERENCES admin.Paciente(dni),
 	matricula_farmaceutico INT NULL,
 	FOREIGN KEY (matricula_farmaceutico) REFERENCES admin.Farmaceutico(matricula),
-	diagnostico CHAR(250) NULL,
-	indicaciones CHAR(250) NULL,
+	diagnostico VARCHAR(250) NULL,
+	indicaciones VARCHAR(250) NULL,
 	expiracion DATETIME NOT NULL,
 	id_estado INT,
 	FOREIGN KEY (id_estado) REFERENCES admin.Estado(id_estado),
