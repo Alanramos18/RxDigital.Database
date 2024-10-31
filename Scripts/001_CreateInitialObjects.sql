@@ -69,18 +69,31 @@ CREATE TABLE admin.ObraSocial (
 	plan_social VARCHAR(50)
 );
 
+CREATE TABLE admin.Localidad(
+	id_localidad INT IDENTITY(1,1) PRIMARY KEY,
+	nombre NVARCHAR(50),
+	pais NVARCHAR(25),
+	provincia NVARCHAR(50)
+);
+
 CREATE TABLE admin.Paciente (
 	dni INT PRIMARY KEY,
 	nombre VARCHAR(50),
 	apellido VARCHAR(50),
 	fecha_nacimiento DATETIME,
+	fecha_inscripcion DATETIME,
+	email VARCHAR(50),
 	id_obra_social INT,
-	nacionalidad VARCHAR(15),
 	sexo CHAR(1) CHECK (sexo = 'M' OR sexo = 'F'),
 	celular VARCHAR(10),
 	telefono_fijo VARCHAR(8),
+	habilitado BIT,
 	FOREIGN KEY (id_obra_social) REFERENCES admin.ObraSocial(id_obra_social),
-	numero_afiliado VARCHAR(50)
+	numero_afiliado VARCHAR(50),
+	calle NVARCHAR(60),
+	numero SMALLINT CHECK (numero >= 0),
+	id_localidad INT,
+	FOREIGN KEY (id_localidad) REFERENCES admin.Localidad(id_localidad)
 );
 
 CREATE TABLE admin.Estado (
@@ -89,7 +102,7 @@ CREATE TABLE admin.Estado (
 );
 
 CREATE TABLE admin.Receta (
-	id_receta INT PRIMARY KEY,
+	codigo_receta VARCHAR(6) PRIMARY KEY NOT NULL,
 	id_medicamento INT,
 	FOREIGN KEY (id_medicamento) REFERENCES admin.Medicamento(id_medicamento),
 	matricula INT,
@@ -100,6 +113,7 @@ CREATE TABLE admin.Receta (
 	FOREIGN KEY (matricula_farmaceutico) REFERENCES admin.Farmaceutico(matricula),
 	diagnostico VARCHAR(250) NULL,
 	indicaciones VARCHAR(250) NULL,
+	fecha_emision DATETIME NOT NULL,
 	expiracion DATETIME NOT NULL,
 	id_estado INT,
 	FOREIGN KEY (id_estado) REFERENCES admin.Estado(id_estado),

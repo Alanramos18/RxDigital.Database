@@ -1,8 +1,12 @@
+USE RxDigital;
+GO;
+
 CREATE PROC ObtenerRecetas
 	@Dni_paciente CHAR(8)
 AS
 	SELECT 
-		r.id_receta,
+		r.codigo_receta,
+		r.fecha_emision as 'Fecha emision',
 		r.expiracion as 'Fecha de Vencimiento',
 		r.diagnostico,
 		m.nombre_comercial,
